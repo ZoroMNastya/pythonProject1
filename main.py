@@ -29,13 +29,6 @@ def create_post():
     return jsonify({'status': 'success'})
 
 
-@app.route('/post', methods=['GET'])
-def read_post():
-    try:
-        return jsonify({'twits': twits})
-    except Exception as ex:
-        return f'{ex}'
-
 
 @app.route('/post', methods=['GET'])
 def read_posts():
@@ -43,11 +36,15 @@ def read_posts():
 
 
 @app.route('/post', methods=['PUT'])
-def edit_post():
-    try:
+def edit_post(id):
+    edit_data = request.get_json()
+    for post in posts:
+        if post ['id'] == id:
+            post ['body'] = edit_data.get('body', post['body'])
+            post ['author'] = edit_data.get('author', post['author']) 
         return jsonify({'status': 'success'})
-    except Exception as ex:
-        return f'{ex}'
+    return jsonify({'status': 'error'})
+    
 
 
 @app.route('/post', methods=['DELETE'])
